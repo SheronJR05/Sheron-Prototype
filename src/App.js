@@ -1,5 +1,6 @@
-import './App.css';
 import { useState, useEffect, useRef } from "react";
+import sheronImg from './Assests/sheron.png';
+import resumePDF from './Assests/2023PECIT238_SHERON_RESUME.pdf';
 
 /* ─────────────────────────────────────────────────────────────
    GRADIENT — soft warm amber (muted, not neon)
@@ -65,12 +66,12 @@ const LIGHT = {
    DATA
 ───────────────────────────────────────────────────────────── */
 const CERTS = [
-  { id:1, badge:"Achievement", name:"Best Coordinator — Zenithon", issuer:"Technical Event & Hackathon", date:"2024", desc:"Awarded for leadership, execution excellence, and strategic event coordination. Recognized for managing operations, team alignment, and delivering a high-impact technical event.", highlight:true },
-  { id:2, badge:"Certification", name:"Certified Penetration Tester", issuer:"Cybertronium", date:"November 2025", desc:"Focused on vulnerability assessment, network security, penetration testing methodologies, and ethical hacking practices." },
-  { id:3, badge:"Certification", name:"Web Application Development", issuer:"Robowaves", date:"February 2025", desc:"Covered full-stack fundamentals, responsive UI development, and deployment practices." },
-  { id:4, badge:"Certification", name:"Mobile App Development (UI/UX)", issuer:"Retech Solutions", date:"December 2024", desc:"Specialized in mobile interface design principles, user flow architecture, and usability optimization." },
-  { id:5, badge:"Certification", name:"Aptis ESOL International Certificate", issuer:"British Council", date:"August 2024", desc:"Demonstrated advanced English communication proficiency across reading, writing, listening, and speaking." },
-  { id:6, badge:"Publication", name:'"Gamify to Multiply" — Creative Collaborator', issuer:"Author: John Robert", date:"2024", desc:"Contributed as a creative collaborator, supporting conceptual development and interactive design perspectives." },
+  { id:1, badge:"Achievement", name:"Best Coordinator — Zenithon", issuer:"Technical Event & Hackathon", date:"2024", desc:"Awarded for leadership, execution excellence, and strategic event coordination. Recognized for managing operations, team alignment, and delivering a high-impact technical event.", highlight:true, image:require('./Assests/bestcoordinato.png') },
+  { id:2, badge:"Certification", name:"Certified Penetration Tester", issuer:"Cybertronium", date:"November 2025", desc:"Focused on vulnerability assessment, network security, penetration testing methodologies, and ethical hacking practices.", image:require('./Assests/malay.jpg') },
+  { id:3, badge:"Certification", name:"Web Application Development", issuer:"Robowaves", date:"February 2025", desc:"Covered full-stack fundamentals, responsive UI development, and deployment practices.", image:require('./Assests/webtechqspider.jpg') },
+  { id:4, badge:"Certification", name:"Mobile App Development (UI/UX)", issuer:"Retech Solutions", date:"December 2024", desc:"Specialized in mobile interface design principles, user flow architecture, and usability optimization.", image:require('./Assests/uxui.jpg') },
+  { id:5, badge:"Certification", name:"Aptis ESOL International Certificate", issuer:"British Council", date:"August 2024", desc:"Demonstrated advanced English communication proficiency across reading, writing, listening, and speaking.", image:require('./Assests/aptis.jpg') },
+  { id:6, badge:"Publication", name:'"Gamify to Multiply" — Creative Collaborator', issuer:"Author: John Robert", date:"2024", desc:"Contributed as a creative collaborator, supporting conceptual development and interactive design perspectives.", image:require('./Assests/gamify.png') },
 ];
 const NAV_ITEMS = ["about","skills","projects","achievements","experience","contact"];
 
@@ -306,8 +307,9 @@ const GlobalStyles = ({ t }) => (
     .toggle-track.on .toggle-thumb { transform:translateX(16px); }
 
     /* PHOTO */
-    .photo-frame { border-radius:20px;overflow:hidden;position:relative;border:1px solid ${t.border};box-shadow:${t.shadowLg};background:${t.bgSecondary};flex-shrink:0; }
-    .photo-frame img { width:100%;height:100%;object-fit:cover;object-position:top center; }
+    .photo-frame { border-radius:20px;overflow:hidden;position:relative;border:1px solid ${t.border};box-shadow:${t.shadowLg};background:linear-gradient(135deg, #C8903A 0%, #E8C06A 50%, #F0D49A 100%);flex-shrink:0;transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease; }
+    .photo-frame:hover { transform:scale(1.03);border-color:rgba(200,144,58,0.7);box-shadow:0 0 0 3px rgba(200,144,58,0.2), 0 8px 40px rgba(200,144,58,0.50), 0 20px 60px rgba(0,0,0,0.70); }
+    .photo-frame img { width:100%;height:100%;object-fit:cover;object-position:center top; }
     .photo-placeholder { width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px; }
 
     /* RESPONSIVE */
@@ -386,7 +388,7 @@ const ResumeBtn = ({ t }) => {
   const [downloaded, setDownloaded] = useState(false);
   return (
     <a
-      href="/resume.pdf"
+      href={resumePDF}
       download="JR_Sheron_Resume.pdf"
       onClick={() => { setDownloaded(true); setTimeout(()=>setDownloaded(false), 3500); }}
       style={{
@@ -474,16 +476,9 @@ const Modal = ({ cert, onClose, t }) => {
         {/* Full image area */}
         <div style={{
           width:"100%",minHeight:420,borderRadius:16,overflow:"hidden",
-          background:`linear-gradient(135deg,${t.bgTertiary},${t.bgSecondary})`,
           border:`1px solid ${t.border}`,
-          display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,
-          padding:40,
         }}>
-          <div style={{fontSize:"4rem",opacity:.3}}>{cert.badge==="Publication"?"📖":"🎓"}</div>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:".65rem",letterSpacing:".1em",color:t.text4,textTransform:"uppercase",textAlign:"center"}}>
-            Certificate image goes here<br/>
-            <span style={{fontSize:".58rem",marginTop:6,display:"block",opacity:.6}}>Replace with: cert.image src</span>
-          </div>
+          <img src={cert.image} alt={cert.name} style={{width:"100%",height:"100%",objectFit:"contain",background:t.bgSecondary}} />
         </div>
       </div>
     </div>
@@ -494,16 +489,18 @@ const Modal = ({ cert, onClose, t }) => {
     <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
       <div className="modal-box" style={{position:"relative"}}>
         {/* Clickable image area → goes to full image */}
-        <div className="modal-img" onClick={()=>setImgView(true)} style={{cursor:"none",position:"relative"}}>
+        <div className="modal-img" onClick={()=>setImgView(true)} style={{cursor:"none",position:"relative",overflow:"hidden"}}>
+          {cert.image
+            ? <img src={cert.image} alt={cert.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top"}} />
+            : <div style={{textAlign:"center"}}>
+                <div style={{fontSize:"2rem",marginBottom:8,opacity:.28}}>{cert.badge==="Publication"?"📖":"🎓"}</div>
+              </div>
+          }
           {[{t:13,l:13,bw:"2px 0 0 2px",br:"4px 0 0 0"},{t:13,r:13,bw:"2px 2px 0 0",br:"0 4px 0 0"},{b:13,l:13,bw:"0 0 2px 2px",br:"0 0 0 4px"},{b:13,r:13,bw:"0 2px 2px 0",br:"0 0 4px 0"}].map((c,i)=>(
             <div key={i} className="modal-img-corner" style={{top:c.t,left:c.l,bottom:c.b,right:c.r,borderWidth:c.bw,borderRadius:c.br}}/>
           ))}
-          <div style={{textAlign:"center"}}>
-            <div style={{fontSize:"2rem",marginBottom:8,opacity:.28}}>{cert.badge==="Publication"?"📖":"🎓"}</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:".63rem",letterSpacing:".08em",color:t.text4,textTransform:"uppercase"}}>Click to view full image</div>
-          </div>
           {/* Expand hint */}
-          <div style={{position:"absolute",bottom:10,right:12,fontSize:".6rem",color:t.text4,fontFamily:"'DM Mono',monospace",letterSpacing:".05em",display:"flex",alignItems:"center",gap:5}}>
+          <div style={{position:"absolute",bottom:10,right:12,fontSize:".6rem",color:"#fff",fontFamily:"'DM Mono',monospace",letterSpacing:".05em",display:"flex",alignItems:"center",gap:5,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7 1h3v3M4 10H1V7M10 1L6 5M1 10l4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
             expand
           </div>
@@ -941,14 +938,7 @@ export default function Portfolio() {
               <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:"clamp(1.6rem,7vw,2.2rem)",fontWeight:700,letterSpacing:"-.03em",...gradText,textAlign:"center"}}>J.R. Sheron</div>
             </div>
             <div className="photo-frame" style={{width:300,height:380}}>
-              {/* <img src="your-photo.jpg" alt="J.R. Sheron" /> */}
-              <div className="photo-placeholder">
-                <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-                  <circle cx="26" cy="19" r="11" fill={t.text4} opacity=".28"/>
-                  <path d="M4 50c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke={t.text4} strokeWidth="2" opacity=".18" fill="none"/>
-                </svg>
-                <span style={{fontSize:".68rem",color:t.text4,textAlign:"center",lineHeight:1.5,fontFamily:"'DM Mono',monospace",marginTop:4}}>Your photo<br/>goes here</span>
-              </div>
+              <img src={sheronImg} alt="J.R. Sheron" />
             </div>
           </div>
 
@@ -1159,4 +1149,3 @@ export default function Portfolio() {
     </>
   );
 }
-
