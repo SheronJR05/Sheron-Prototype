@@ -921,7 +921,7 @@ export default function Portfolio() {
 
             {/* STATS — gradient numbers */}
             <div className="hero-stats" style={{display:"flex",paddingTop:28,borderTop:`1px solid ${t.border}`,opacity:0,animation:"fadeUp .8s .65s ease both"}}>
-              {[["3+","Years designing"],["4","Certifications"],["3","Internships"],["2","Projects"]].map(([n,l],i)=>(
+              {[["3+","Years designing"],["4","Certifications"],["5","Internships"],["4","Projects"]].map(([n,l],i)=>(
                 <div key={i} style={{flex:1,minWidth:68,paddingRight:i<3?20:0,marginRight:i<3?20:0,borderRight:i<3?`1px solid ${t.border}`:"none"}}>
                   <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:"1.8rem",fontWeight:700,lineHeight:1,...gradText}}>{n}</div>
                   <div style={{fontSize:".67rem",color:t.text4,marginTop:5}}>{l}</div>
