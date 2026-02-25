@@ -8,6 +8,17 @@ import imgAptis from './Assests/aptis.jpg';
 import imgGamify from './Assests/gamify.png';
 
 /* ─────────────────────────────────────────────────────────────
+   SOUND EFFECTS
+───────────────────────────────────────────────────────────── */
+const playSound = (file, volume = 0.5) => {
+  try {
+    const audio = new Audio(`/sounds/${file}`);
+    audio.volume = volume;
+    audio.play().catch(() => {});
+  } catch(e) {}
+};
+
+/* ─────────────────────────────────────────────────────────────
    GRADIENT — soft warm amber (muted, not neon)
    Inspired by your image: dusty gold → soft cream
    Used ONLY on: big headings, primary CTA, stat numbers
@@ -464,7 +475,7 @@ const Modal = ({ cert, onClose, t }) => {
     <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget) setImgView(false);}}>
       <div style={{position:"relative",width:"100%",maxWidth:780,animation:"slideUp .25s ease"}}>
         {/* Back arrow */}
-        <button onClick={()=>setImgView(false)} style={{
+        <button onClick={()=>{ playSound("back.mpeg", 0.45); setImgView(false); }} style={{
           position:"absolute",top:-44,left:0,
           display:"flex",alignItems:"center",gap:8,
           background:"none",border:"none",color:"#F2EDE6",
@@ -494,7 +505,7 @@ const Modal = ({ cert, onClose, t }) => {
     <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
       <div className="modal-box" style={{position:"relative"}}>
         {/* Clickable image area → goes to full image */}
-        <div className="modal-img" onClick={()=>setImgView(true)} style={{cursor:"none",position:"relative",overflow:"hidden"}}>
+        <div className="modal-img" onClick={()=>{ playSound("click.mpeg", 0.45); setImgView(true); }} style={{cursor:"none",position:"relative",overflow:"hidden"}}>
           {cert.image
             ? <img src={cert.image} alt={cert.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top"}} />
             : <div style={{textAlign:"center"}}>
@@ -510,7 +521,7 @@ const Modal = ({ cert, onClose, t }) => {
             expand
           </div>
         </div>
-        <button className="modal-close" onClick={onClose}>✕</button>
+        <button className="modal-close" onClick={()=>{ playSound("back.mpeg", 0.45); onClose(); }}>✕</button>
         <div className="modal-body">
           <Badge label={cert.badge} highlight={cert.highlight} t={t}/>
           <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:"1.08rem",fontWeight:600,color:t.text,marginBottom:6,lineHeight:1.3}}>{cert.name}</div>
@@ -525,7 +536,7 @@ const Modal = ({ cert, onClose, t }) => {
 
 /* CERT CARD */
 const CertCard = ({ cert, onClick, t, style={} }) => (
-  <div onClick={()=>onClick(cert)} style={{
+  <div onClick={()=>{ playSound("click.mpeg", 0.45); onClick(cert); }} style={{
     padding:"20px 22px",borderRadius:14,cursor:"none",
     background: cert.highlight ? "rgba(200,144,58,0.06)" : t.surface,
     border: `1px solid ${cert.highlight ? "rgba(200,144,58,0.30)" : t.border}`,
@@ -590,7 +601,7 @@ function BackToTop({ t }) {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => { playSound("nav_sound.mpeg", 0.4); window.scrollTo({ top: 0, behavior: "smooth" }); }}
       aria-label="Back to top"
       style={{
         position: "fixed", bottom: 28, right: 28, zIndex: 400,
@@ -813,6 +824,9 @@ export default function Portfolio() {
     const saved = localStorage.getItem("jrs-theme");
     if (saved) setDark(saved === "dark");
     else setDark(true);
+    // Intro sound — plays once on load
+    const t = setTimeout(() => playSound("intro.mpeg", 0.4), 400);
+    return () => clearTimeout(t);
   }, []);
 
   const toggleTheme = () => setDark(d => {
@@ -852,7 +866,7 @@ export default function Portfolio() {
 
         <div className="nav-links-desktop" style={{display:"flex",gap:24,position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
           {NAV_ITEMS.map(id=>(
-            <button key={id} onClick={()=>scrollTo(id)} style={{
+            <button key={id} onClick={()=>{ playSound("nav_sound.mpeg", 0.4); scrollTo(id); }} style={{
               background:"none",border:"none",
               fontSize:".74rem",fontWeight:500,textTransform:"capitalize",
               color: active===id ? t.text : t.text3,
