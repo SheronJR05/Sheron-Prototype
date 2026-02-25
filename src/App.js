@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import sheronImg from './Assests/sheron.png';
-import resumePDF from './Assests/2023PECIT238_SHERON_RESUME.pdf';
+import imgBestCoordinator from './Assests/bestcoordinato.png';
+import imgMalay from './Assests/malay.jpg';
+import imgWebtech from './Assests/webtechqspider.jpg';
+import imgUxui from './Assests/uxui.jpg';
+import imgAptis from './Assests/aptis.jpg';
+import imgGamify from './Assests/gamify.png';
 
 /* ─────────────────────────────────────────────────────────────
    GRADIENT — soft warm amber (muted, not neon)
@@ -66,12 +71,12 @@ const LIGHT = {
    DATA
 ───────────────────────────────────────────────────────────── */
 const CERTS = [
-  { id:1, badge:"Achievement", name:"Best Coordinator — Zenithon", issuer:"Technical Event & Hackathon", date:"2024", desc:"Awarded for leadership, execution excellence, and strategic event coordination. Recognized for managing operations, team alignment, and delivering a high-impact technical event.", highlight:true, image:require('./Assests/bestcoordinato.png') },
-  { id:2, badge:"Certification", name:"Certified Penetration Tester", issuer:"Cybertronium", date:"November 2025", desc:"Focused on vulnerability assessment, network security, penetration testing methodologies, and ethical hacking practices.", image:require('./Assests/malay.jpg') },
-  { id:3, badge:"Certification", name:"Web Application Development", issuer:"Robowaves", date:"February 2025", desc:"Covered full-stack fundamentals, responsive UI development, and deployment practices.", image:require('./Assests/webtechqspider.jpg') },
-  { id:4, badge:"Certification", name:"Mobile App Development (UI/UX)", issuer:"Retech Solutions", date:"December 2024", desc:"Specialized in mobile interface design principles, user flow architecture, and usability optimization.", image:require('./Assests/uxui.jpg') },
-  { id:5, badge:"Certification", name:"Aptis ESOL International Certificate", issuer:"British Council", date:"August 2024", desc:"Demonstrated advanced English communication proficiency across reading, writing, listening, and speaking.", image:require('./Assests/aptis.jpg') },
-  { id:6, badge:"Publication", name:'"Gamify to Multiply" — Creative Collaborator', issuer:"Author: John Robert", date:"2024", desc:"Contributed as a creative collaborator, supporting conceptual development and interactive design perspectives.", image:require('./Assests/gamify.png') },
+  { id:1, badge:"Achievement", name:"Best Coordinator — Zenithon", issuer:"Technical Event & Hackathon", date:"2024", desc:"Awarded for leadership, execution excellence, and strategic event coordination. Recognized for managing operations, team alignment, and delivering a high-impact technical event.", highlight:true, image:imgBestCoordinator },
+  { id:2, badge:"Certification", name:"Certified Penetration Tester", issuer:"Cybertronium", date:"November 2025", desc:"Focused on vulnerability assessment, network security, penetration testing methodologies, and ethical hacking practices.", image:imgMalay },
+  { id:3, badge:"Certification", name:"Web Application Development", issuer:"Robowaves", date:"February 2025", desc:"Covered full-stack fundamentals, responsive UI development, and deployment practices.", image:imgWebtech },
+  { id:4, badge:"Certification", name:"Mobile App Development (UI/UX)", issuer:"Retech Solutions", date:"December 2024", desc:"Specialized in mobile interface design principles, user flow architecture, and usability optimization.", image:imgUxui },
+  { id:5, badge:"Certification", name:"Aptis ESOL International Certificate", issuer:"British Council", date:"August 2024", desc:"Demonstrated advanced English communication proficiency across reading, writing, listening, and speaking.", image:imgAptis },
+  { id:6, badge:"Publication", name:'"Gamify to Multiply" — Creative Collaborator', issuer:"Author: John Robert", date:"2024", desc:"Contributed as a creative collaborator, supporting conceptual development and interactive design perspectives.", image:imgGamify },
 ];
 const NAV_ITEMS = ["about","skills","projects","achievements","experience","contact"];
 
@@ -332,7 +337,7 @@ const GlobalStyles = ({ t }) => (
       .hamburger-btn   { display:flex !important; }
       .section         { padding:70px 20px 50px !important; }
       .section-wide    { padding:50px 20px !important; }
-      .hero-section    { padding:110px 20px 72px 20px !important; }
+      #hero            { padding:110px 20px 72px 20px !important; }
       .hero-name       { font-size:clamp(2.1rem,9vw,3rem) !important; }
     }
     @media (max-width:480px) {
@@ -388,7 +393,7 @@ const ResumeBtn = ({ t }) => {
   const [downloaded, setDownloaded] = useState(false);
   return (
     <a
-      href={resumePDF}
+      href="/2023PECIT238_SHERON_RESUME.pdf"
       download="JR_Sheron_Resume.pdf"
       onClick={() => { setDownloaded(true); setTimeout(()=>setDownloaded(false), 3500); }}
       style={{
@@ -524,16 +529,21 @@ const CertCard = ({ cert, onClick, t, style={} }) => (
     padding:"20px 22px",borderRadius:14,cursor:"none",
     background: cert.highlight ? "rgba(200,144,58,0.06)" : t.surface,
     border: `1px solid ${cert.highlight ? "rgba(200,144,58,0.30)" : t.border}`,
-    boxShadow:t.shadowSm,transition:"all .22s",...style,
+    boxShadow:t.shadowSm,transition:"all .22s",position:"relative",overflow:"hidden",...style,
   }}
-  onMouseEnter={e=>{e.currentTarget.style.boxShadow=t.shadowMd;e.currentTarget.style.transform="translateY(-3px)";}}
-  onMouseLeave={e=>{e.currentTarget.style.boxShadow=t.shadowSm;e.currentTarget.style.transform="translateY(0)";}}>
+  onMouseEnter={e=>{e.currentTarget.style.boxShadow=t.shadowMd;e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.borderColor="rgba(200,144,58,0.5)";e.currentTarget.style.background=cert.highlight?"rgba(200,144,58,0.10)":"rgba(200,144,58,0.04)";}}
+  onMouseLeave={e=>{e.currentTarget.style.boxShadow=t.shadowSm;e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.borderColor=cert.highlight?"rgba(200,144,58,0.30)":t.border;e.currentTarget.style.background=cert.highlight?"rgba(200,144,58,0.06)":t.surface;}}>
     <Badge label={cert.badge} highlight={cert.highlight} t={t}/>
     <div style={{fontSize:".9rem",fontWeight:600,color:cert.highlight?t.accent:t.text,marginBottom:4,letterSpacing:"-.01em"}}>{cert.name}</div>
     <div style={{fontSize:".73rem",color:t.text3,fontWeight:500,marginBottom:2}}>{cert.issuer}</div>
     <div style={{fontSize:".66rem",color:t.text4,fontFamily:"'DM Mono',monospace"}}>{cert.date}</div>
     {cert.highlight&&<div style={{fontSize:".82rem",color:t.text3,lineHeight:1.7,fontWeight:300,marginTop:10}}>{cert.desc}</div>}
-    <div style={{marginTop:12,fontSize:".69rem",color:t.accent,fontFamily:"'DM Mono',monospace",letterSpacing:".04em"}}>View details →</div>
+    <div style={{marginTop:12,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <span style={{fontSize:".69rem",color:t.accent,fontFamily:"'DM Mono',monospace",letterSpacing:".04em"}}>View certificate →</span>
+      <div style={{width:26,height:26,borderRadius:"50%",background:"rgba(200,144,58,0.10)",border:"1px solid rgba(200,144,58,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2.5 8.5l6-6M5 2.5h3.5v3.5" stroke="#C8903A" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </div>
+    </div>
   </div>
 );
 
@@ -921,7 +931,7 @@ export default function Portfolio() {
 
             {/* STATS — gradient numbers */}
             <div className="hero-stats" style={{display:"flex",paddingTop:28,borderTop:`1px solid ${t.border}`,opacity:0,animation:"fadeUp .8s .65s ease both"}}>
-              {[["3+","Years designing"],["4","Certifications"],["5","Internships"],["4","Projects"]].map(([n,l],i)=>(
+              {[["3+","Years designing"],["4","Certifications"],["3","Internships"],["2","Projects"]].map(([n,l],i)=>(
                 <div key={i} style={{flex:1,minWidth:68,paddingRight:i<3?20:0,marginRight:i<3?20:0,borderRight:i<3?`1px solid ${t.border}`:"none"}}>
                   <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:"1.8rem",fontWeight:700,lineHeight:1,...gradText}}>{n}</div>
                   <div style={{fontSize:".67rem",color:t.text4,marginTop:5}}>{l}</div>
@@ -1092,6 +1102,9 @@ export default function Portfolio() {
             <div style={{fontSize:".6rem",fontWeight:600,letterSpacing:".07em",color:t.accent,textTransform:"uppercase",marginBottom:14,fontFamily:"'DM Mono',monospace"}}>Events</div>
             <div className="reveal">
               <ExpCard role="Zenithon — Technical Event & Hackathon" org="Best Coordinator Award" dur="Lead Role" desc="Led planning, team coordination, and execution strategy. Managed logistics, participant flow, and overall event operations for seamless high-engagement delivery." isEvent t={t}/>
+            </div>
+            <div className="reveal d1">
+              <ExpCard role="Delegate Affairs" org="Model United Nations (MUN)" dur="Event" desc="Oversaw delegate management, logistics, and communication throughout the event. Coordinated delegate needs, handled documentation, and ensured seamless operations across all committee sessions." isEvent t={t}/>
             </div>
           </div>
         </div>
